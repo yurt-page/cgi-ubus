@@ -29,4 +29,8 @@ Then create a configuration `/etc/lighttpd/conf.d/99-ubus.conf`:
 
 ## Author
 Jo-Philipp Wich
+
 See a discussion https://forum.openwrt.org/t/lighttpd-and-ubus-over-json-rpc/117582
+
+## License
+[0BDSD](https://opensource.org/licenses/0BSD) (similar to Public Domain)
