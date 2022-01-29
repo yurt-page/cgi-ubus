@@ -26,6 +26,13 @@ Then create a configuration `/etc/lighttpd/conf.d/99-ubus.conf`:
 ## Apache HTTPD
 *TBD*
 
+   <Directory "/var/www/htdocs/cgit/">
+        AllowOverride None
+        Options +ExecCGI
+        Order allow,deny
+        Allow from all
+    </Directory>
+
 
 ## Author
 Jo-Philipp Wich
