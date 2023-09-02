@@ -5,12 +5,24 @@ The UBUS over http bridge is implemented as [a plugin for uhttpd](https://git.op
 There is also [nginx-ubus-module](https://github.com/Ansuel/nginx-ubus-module).
 For other web servers you may use this CGI adapter.
 
-## BusyBox httpd
-Put the script into `/ubus/cgi-bin/` folder:
+## Install
+Upload to router:
 
-    mkdir -p /www/ubus/cgi-bin/
-    cp ubus.sh /www/ubus/cgi-bin/index.cgi
-    chmod +x /www/ubus/cgi-bin/index.cgi
+    scp -O ubus.sh root@192.168.1.1:/www/cgi-bin/ubus.sh
+
+Now enable the script as a UBUS path for Luci:
+
+    chmod +x /www/cgi-bin/ubus.sh
+    uci set luci.main.ubuspath='/cgi-bin/ubus.sh'
+    uci commit
+    reboot
+
+Yes, the reboot is required to evict cache.
+
+## BusyBox httpd
+
+The BB httpd needs to be compiled with CGI support.
+See BUSYBOX_CONFIG_FEATURE_HTTPD_CGI
 
 ## Lighttpd
 You must install mod_cgi:
@@ -20,13 +32,12 @@ You must install mod_cgi:
 *TBD*
 Then create a configuration `/etc/lighttpd/conf.d/99-ubus.conf`:
 
-    cgi.assign := (".cgi" => "")
-    url.rewrite = ("^/ubus/$" => "/ubus/cgi-bin/index.cgi")
+    cgi.assign := (".sh" => "/bin/sh")
 
 ## Apache HTTPD
 *TBD*
 
-   <Directory "/var/www/htdocs/cgit/">
+   <Directory "/var/www/htdocs/">
         AllowOverride None
         Options +ExecCGI
         Order allow,deny
