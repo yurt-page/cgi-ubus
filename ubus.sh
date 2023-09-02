@@ -1,4 +1,5 @@
 #!/bin/sh
+[ "$REQUEST_METHOD" != "POST" ] && printf 'Status: 405\r\n\r\n' && exit
 
 access() {
   local sid=$1
