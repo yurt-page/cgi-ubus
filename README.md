@@ -34,16 +34,35 @@ Then create a configuration `/etc/lighttpd/conf.d/99-ubus.conf`:
 
     cgi.assign := (".sh" => "/bin/sh")
 
+## Caddy
+To run LuCI on Caddy, prepare a Caddyfile
+
+```conf
+{
+    order file_server last
+}
+
+:80 {
+    cgi /cgi-bin/luci* /www/cgi-bin/luci { script_name /cgi-bin/luci }
+    cgi /ubus* ubus.sh { script_name /ubus }
+    file_server /luci-static* { root /www }
+    redir / /cgi-bin/luci
+}
+```
+
+See [https://sigeryang.net/2022/02/12/caddy-openwrt-luci/](https://sigeryang.net/2022/02/12/caddy-openwrt-luci/)
+
 ## Apache HTTPD
 *TBD*
 
+```conf
    <Directory "/var/www/htdocs/">
         AllowOverride None
         Options +ExecCGI
         Order allow,deny
         Allow from all
     </Directory>
-
+```
 
 ## Author
 Jo-Philipp Wich
